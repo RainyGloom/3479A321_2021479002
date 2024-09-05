@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,8 +12,21 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Laboratorio 1',
+      title: 'Laboratorio 2',
       theme: ThemeData(
+        fontFamily:'Daydream', 
+        textTheme: const TextTheme(
+          displayLarge:  TextStyle(
+            fontSize: 21,
+            //fontWeight: FontWeight.bold,
+          ),
+          titleLarge:  TextStyle( 
+            fontFamily: 'Daydream',
+            fontSize: 21,
+            //fontStyle: FontStyle.italic,
+          ),
+
+        ),
         // This is the theme of your application.
         //
         // TRY THIS: Try running your application with "flutter run". You'll see
@@ -31,7 +45,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.amber),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Laboratorio 1 Home'),
+      home: const MyHomePage(title: 'Laboratorio 2 Home'),
     );
   }
 }
@@ -119,6 +133,7 @@ class _MyHomePageState extends State<MyHomePage> {
           // wireframe for each widget.
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            
             const Text(
               'Has presionado este boton:',
             ),
@@ -130,6 +145,10 @@ class _MyHomePageState extends State<MyHomePage> {
             (
               ' veces'
             ),
+
+            SvgPicture.asset('assets/icons/triforce.svg',
+            height: 50,
+            width: 50,)
           ],
         ),
       ),
