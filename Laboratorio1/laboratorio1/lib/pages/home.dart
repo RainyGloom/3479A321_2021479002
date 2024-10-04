@@ -2,6 +2,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
 import 'package:laboratorio1/SizedRow.dart';
 import 'package:laboratorio1/pages/Page.dart';
+import 'package:logger/logger.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -9,7 +10,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Laboratorio 3',
+      title: 'Laboratorio 5',
       theme: ThemeData(
         fontFamily:'Daydream', 
         textTheme: const TextTheme(
@@ -37,20 +38,65 @@ class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
 
   final String title;
+
+
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<MyHomePage> createState()
+  {
+    Logger log = Logger();
+    log.d("Home Page state create");
+    return _MyHomePageState();
+  }
 }
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   String label = "Derrota";
-
+  Logger _log = Logger();
   @override
   void initState()
   {
+    _log.d("Home page init state");
     super.initState();
     updateLabel();
   }
+
+  @override
+  void didChangeDependencies() {
+    _log.d("Home page did change dependencies?");
+    super.didChangeDependencies();
+  }
+
+  @override
+  void setState(VoidCallback fn) {
+    _log.d("Home page setting state");
+    super.setState(fn);
+  }
+
+  @override 
+  void didUpdateWidget(covariant MyHomePage oldWidget) {
+     _log.d("Home page did update widget?");
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  void deactivate() {
+    _log.d("Home page deactivated");
+    super.deactivate();
+  }
+
+  @override
+  void dispose() {
+    _log.d("Home page disposed");
+    super.dispose();
+  }
+
+  @override
+  void reassemble() {
+    _log.d("Home page reassemble");
+    super.reassemble();
+  }
+
   void _incrementCounter() {
     setState(() {
       _counter++;
@@ -89,6 +135,7 @@ class _MyHomePageState extends State<MyHomePage> {
   
   @override
   Widget build(BuildContext context) {
+    _log.d("Home page build");
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
