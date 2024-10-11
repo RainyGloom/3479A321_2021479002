@@ -1,36 +1,42 @@
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
 import 'package:laboratorio1/SizedRow.dart';
+import 'package:laboratorio1/app_data.dart';
 import 'package:laboratorio1/pages/Page.dart';
 import 'package:laboratorio1/pages/common.dart';
 import 'package:logger/logger.dart';
+import 'package:provider/provider.dart';
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Laboratorio 5',
-      theme: ThemeData(
-        fontFamily:'Daydream', 
-        textTheme: const TextTheme(
-          displayLarge:  TextStyle(
-            fontSize: 21,
-            //fontWeight: FontWeight.bold,
-          ),
-          titleLarge:  TextStyle( 
-            fontFamily: 'Daydream',
-            fontSize: 21,
-            //fontStyle: FontStyle.italic,
-          ),
+    return ChangeNotifierProvider<AppData>(
+      create: (context) => AppData(),
+      child: MaterialApp(
+        title: 'Laboratorio 5',
+        theme: ThemeData(
+          fontFamily:'Daydream', 
+          textTheme: const TextTheme(
+            displayLarge:  TextStyle(
+              fontSize: 21,
+              //fontWeight: FontWeight.bold,
+            ),
+            titleLarge:  TextStyle( 
+              fontFamily: 'Daydream',
+              fontSize: 21,
+              //fontStyle: FontStyle.italic,
+            ),
 
+          ),
+        
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.amber),
+          useMaterial3: true,
         ),
-       
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.amber),
-        useMaterial3: true,
+        home: const MyHomePage(),
       ),
-      home: const MyHomePage(),
     );
   }
 }
@@ -51,62 +57,81 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
   String label = "Derrota";
   Logger _log = Logger();
 
   Drawer _mainDrawer()
   {
-    Drawer returnDrawer = Drawer(child: ElevatedButton(onPressed: () => goingTo(context, const MyHomePage()), child: const Text("Volver")));
+    Drawer returnDrawer = Drawer(child: ElevatedButton(onPressed: ()
+    {
+      goingTo(context, const MyHomePage());
+      context.read<AppData>().actions.add("Acceso a la pagina de inicio");
+    }, child: const Text("Volver")));
     return Drawer(
       child: ListView(children:
         [
-          ElevatedButton(onPressed: () => goingTo(context, const MyHomePage()), child: const Text("Contador")),
-          ElevatedButton(onPressed: () => goingTo(context, CustomPage(
-                title: "Detalle", 
-                body: const Center(
-                  child: 
-                    Column(children: 
-                    [
-                      Text("Este es el laboratorio 6 de Dispositivos Moviles"),
-                    ],
+          ElevatedButton(onPressed: ()
+          {
+            goingTo(context, const MyHomePage());
+            context.read<AppData>().actions.add("Acceso a la pagina de inicio");
+          }, child: const Text("Contador")),
+          ElevatedButton(onPressed: () 
+            {
+              goingTo(context, CustomPage(
+                  title: "Detalle", 
+                  body: const Center(
+                    child: 
+                      Column(children: 
+                      [
+                        Text("Este es el laboratorio 6 de Dispositivos Moviles"),
+                      ],
+                    ),
                   ),
+                  drawer: returnDrawer, 
                 ),
-                drawer: returnDrawer, 
-              ),
-            ), 
+              );
+              context.read<AppData>().actions.add("Acceso a la pagina de detalles");
+            }, 
             child: const Text("Detalle"),
           ),
-          ElevatedButton(onPressed: () => goingTo(context, CustomPage(
-                title: "Sobre mi", 
-                body: const Center(
-                  child: 
-                    Column(children: 
-                    [
-                      Text("Leandro Jesus Carvajal Pallacan"),
-                      Text("Estudiante IDVRV"),
-                    ],
+          ElevatedButton(onPressed: ()
+            {
+              goingTo(context, CustomPage(
+                  title: "Sobre mi", 
+                  body: const Center(
+                    child: 
+                      Column(children: 
+                      [
+                        Text("Leandro Jesus Carvajal Pallacan"),
+                        Text("Estudiante IDVRV"),
+                      ],
+                    ),
                   ),
+                  drawer: returnDrawer, 
                 ),
-                drawer: returnDrawer, 
-              ),
-            ), 
+              );
+              context.read<AppData>().actions.add("Acceso a la pagina de Sobre mi");
+            },
             child: const Text("Sobre"),
           ), 
-          ElevatedButton(onPressed: () => goingTo(context, CustomPage(
-                title: "Sobre mi", 
-                body: const Center(
-                  child: 
-                    Column(children: 
-                    [
-                      Text("Leandro Jesus Carvajal Pallacan"),
-                      Text("Estudiante IDVRV"),
-                    ],
+          ElevatedButton(onPressed: ()
+            {
+              context.read<AppData>().actions.add("Ingreso a la auditoria");
+              goingTo(context, CustomPage(
+                  title: "Auditoria", 
+                  body: Center(
+                    child: ListView.builder(
+                      itemCount: context.read<AppData>().actions.length,
+                      itemBuilder: (context, index)
+                      {
+                        return Text((index + 1).toString() + ". " + context.read<AppData>().actions[index]);
+                      }
+                    ),
                   ),
+                  drawer: returnDrawer, 
                 ),
-                drawer: returnDrawer, 
-              ),
-            ), 
+              );
+            },
             child: const Text("Auditoria")
           ),
         ],
@@ -157,39 +182,20 @@ class _MyHomePageState extends State<MyHomePage> {
     super.reassemble();
   }
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-      updateLabel();
-    });
-  }
-
-  void _decreaseCount()
-  {
-    setState(() {
-      _counter--;
-      updateLabel();
-    });
-  }
-
-  void _reset()
-  {
-    setState(() {
-      _counter = 0;
-      updateLabel();
-    });
-  }
-
   void updateLabel()
   {
-    if(_counter == 5 || _counter == 10)
+    setState(()
     {
-      label = "La victoria es tuya";
-    }
-    else
-    {
-      label = "Sufres la derrota";
-    }
+      int count = context.read<AppData>().count;
+      if(count == 5 || count == 10)
+      {
+        label = "La victoria es tuya";
+      }
+      else
+      {
+        label = "Sufres la derrota";
+      }
+    });
   }
 
   
@@ -220,8 +226,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     const Text(
                       'Has presionado este boton:',
                     ),
-                    Text(
-                      '$_counter',
+                    Text(context.read<AppData>().count.toString(),
                       style: Theme.of(context).textTheme.headlineMedium,
                     ),
                     const Text
@@ -249,13 +254,29 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  ElevatedButton createDecreaseButton() => ElevatedButton(onPressed: _decreaseCount, child: const Icon(Icons.remove));
+  ElevatedButton createDecreaseButton() => ElevatedButton(
+    onPressed: ()
+    {
+      context.read<AppData>().decreaseCount();
+      updateLabel();
+    },
+    child: const Icon(Icons.remove));
 
-  ElevatedButton createIncrementButton() => ElevatedButton(onPressed: _incrementCounter, child: const Icon(Icons.add));
+  ElevatedButton createIncrementButton() => ElevatedButton(
+    onPressed: ()
+    {
+      context.read<AppData>().incrementCounter();
+      updateLabel();
+    },
+    child: const Icon(Icons.add));
 
   ElevatedButton createResetButton() {
     return ElevatedButton(
-      onPressed: _reset,
+      onPressed: ()
+      {
+        context.read<AppData>().reset();
+        updateLabel();
+      },
       child: const Icon(Icons.exposure_zero),
     );
   }
