@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 class CustomPage extends StatelessWidget {
-  const CustomPage({super.key, required this.title, required this.buttons});
+  const CustomPage({super.key, required this.title, required this.body, required this.drawer});
   final String title;
-  final List<ElevatedButton> buttons;
+  final Widget body;
+  final Widget drawer;
 
   @override
   Widget build(BuildContext context) {
@@ -11,15 +12,8 @@ class CustomPage extends StatelessWidget {
         appBar: AppBar(
           title: Text(title)
         ),
-        body: const Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-               Text('FELIZ 18'),
-            ]
-          )
-        ),
-        persistentFooterButtons: buttons,
+        body: body,
+        drawer: drawer,
     );
   }
 }

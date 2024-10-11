@@ -2,6 +2,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
 import 'package:laboratorio1/SizedRow.dart';
 import 'package:laboratorio1/pages/Page.dart';
+import 'package:laboratorio1/pages/common.dart';
 import 'package:logger/logger.dart';
 
 class MyApp extends StatelessWidget {
@@ -29,15 +30,15 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.amber),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Laboratorio 3 Home'),
+      home: const MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  const MyHomePage({super.key});
 
-  final String title;
+  static String title = 'Laboratorio 3 Home';
 
 
   @override
@@ -53,6 +54,65 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   String label = "Derrota";
   Logger _log = Logger();
+
+  Drawer _mainDrawer()
+  {
+    Drawer returnDrawer = Drawer(child: ElevatedButton(onPressed: () => goingTo(context, const MyHomePage()), child: const Text("Volver")));
+    return Drawer(
+      child: ListView(children:
+        [
+          ElevatedButton(onPressed: () => goingTo(context, const MyHomePage()), child: const Text("Contador")),
+          ElevatedButton(onPressed: () => goingTo(context, CustomPage(
+                title: "Detalle", 
+                body: const Center(
+                  child: 
+                    Column(children: 
+                    [
+                      Text("Este es el laboratorio 6 de Dispositivos Moviles"),
+                    ],
+                  ),
+                ),
+                drawer: returnDrawer, 
+              ),
+            ), 
+            child: const Text("Detalle"),
+          ),
+          ElevatedButton(onPressed: () => goingTo(context, CustomPage(
+                title: "Sobre mi", 
+                body: const Center(
+                  child: 
+                    Column(children: 
+                    [
+                      Text("Leandro Jesus Carvajal Pallacan"),
+                      Text("Estudiante IDVRV"),
+                    ],
+                  ),
+                ),
+                drawer: returnDrawer, 
+              ),
+            ), 
+            child: const Text("Sobre"),
+          ), 
+          ElevatedButton(onPressed: () => goingTo(context, CustomPage(
+                title: "Sobre mi", 
+                body: const Center(
+                  child: 
+                    Column(children: 
+                    [
+                      Text("Leandro Jesus Carvajal Pallacan"),
+                      Text("Estudiante IDVRV"),
+                    ],
+                  ),
+                ),
+                drawer: returnDrawer, 
+              ),
+            ), 
+            child: const Text("Auditoria")
+          ),
+        ],
+      ),
+    );
+  }
   @override
   void initState()
   {
@@ -139,7 +199,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+        title: Text(MyHomePage.title),
       ),
       body: Column(
         children: 
@@ -185,46 +245,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-      persistentFooterButtons: 
-      [
-        ElevatedButton(onPressed: ()
-        {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => 
-              CustomPage(title: 'Pagina 1', buttons: 
-                [
-                  ElevatedButton(onPressed: ()
-                  {
-                    Navigator.pop(context);
-                  }, 
-                  child: const Text('Anterior'),
-                  ),
-                  ElevatedButton(onPressed: ()
-                  {
-                    Navigator.push(context, 
-                    MaterialPageRoute(builder: (context) =>
-                      CustomPage(title: 'Pagina 2', buttons: 
-                      [
-                        ElevatedButton(onPressed: ()
-                        {
-                          Navigator.pop(context);
-                        }, 
-                        child: const Text('Anterior'),
-                        ),
-                      ])
-                      )
-                    );
-                  }, child: const Text('Siguiente')
-                  )
-                ],
-              )
-            )
-          );
-        }, 
-        child: const Text('Siguiente')
-        )
-      ],
+      drawer: _mainDrawer()
     );
   }
 
