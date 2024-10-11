@@ -79,13 +79,38 @@ class _MyHomePageState extends State<MyHomePage> {
             {
               goingTo(context, CustomPage(
                   title: "Detalle", 
-                  body: const Center(
+                  body: Card(
+                    color: Colors.amber,
                     child: 
-                      Column(children: 
-                      [
-                        Text("Este es el laboratorio 6 de Dispositivos Moviles"),
-                      ],
-                    ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          SvgPicture.asset('assets/icons/triforce.svg',
+                          height: 50,
+                          width: 50,),
+                          const Text(
+                            'Has presionado este boton:',
+                          ),
+                          Text(context.read<AppData>().count.toString(),
+                            style: Theme.of(context).textTheme.headlineMedium,
+                          ),
+                          const Text
+                          (
+                            ' veces'
+                          ),
+                          
+                          Text(
+                            label
+                          ),
+
+                          SizedRow(
+                            width: 300,
+                            height: 75,
+                            childAlignment: MainAxisAlignment.center,
+                            children: [createIncrementButton(), createResetButton(), createDecreaseButton()]
+                          ),
+                        ],
+                      ),
                   ),
                   drawer: returnDrawer, 
                 ),
